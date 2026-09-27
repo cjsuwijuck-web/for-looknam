@@ -1,0 +1,1074 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>มีอะไรอยากบอกเธอ... 💕</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Kanit & Mali for cute Thai typography) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Mali:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            font-family: 'Mali', 'Kanit', cursive, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Glassmorphism card effects */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.35), 0 0 20px rgba(255, 105, 180, 0.2);
+        }
+
+        /* Glowing text effects */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.6), 0 0 20px rgba(255, 182, 193, 0.8);
+        }
+
+        /* Scanner Beam Effect */
+        @keyframes scanBeam {
+            0% { top: 0%; opacity: 0.8; }
+            50% { top: 100%; opacity: 1; }
+            100% { top: 0%; opacity: 0.8; }
+        }
+
+        .scan-beam {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff3366, #ff6699, transparent);
+            box-shadow: 0 0 15px #ff3366, 0 0 25px #ff6699;
+            animation: scanBeam 2s infinite ease-in-out;
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        /* Pulse Heart Beat */
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+        .animate-pulse-heart {
+            animation: heartPulse 1.8s infinite;
+        }
+
+        /* Anime Sparkle Effect */
+        @keyframes animeGlow {
+            0% { filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8)) hue-rotate(0deg); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.9)) hue-rotate(45deg); }
+            100% { filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8)) hue-rotate(0deg); }
+        }
+        .anime-glow {
+            animation: animeGlow 3s infinite ease-in-out;
+        }
+
+        /* Background Animated Particles Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Animated Watermark Background */
+        .watermark-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.12;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            transform: rotate(-12deg) scale(1.35);
+        }
+        .watermark-track {
+            display: flex;
+            white-space: nowrap;
+            width: 200%;
+        }
+        .track-left {
+            animation: marqueeLeft 28s linear infinite;
+        }
+        .track-right {
+            animation: marqueeRight 32s linear infinite;
+        }
+        .watermark-item {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #ff2d75;
+            padding: 0 1.2rem;
+            letter-spacing: 0.05em;
+            user-select: none;
+            text-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+        }
+        @keyframes marqueeLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes marqueeRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Privilege Card Hover Effect */
+        .privilege-card {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .privilege-card:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(244, 114, 182, 0.3);
+        }
+
+        /* Transition Effects */
+        .page-transition {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff6699;
+            border-radius: 10px;
+        }
+    </style>
+    <!-- YouTube IFrame API for background music -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-100 via-rose-200 to-red-100 min-h-screen text-gray-800 overflow-x-hidden relative flex flex-col justify-between">
+
+    <!-- Background Floating Hearts Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Animated Moving Watermark "iloveลูกน้ำ" Background -->
+    <div class="watermark-bg" aria-hidden="true">
+        <div class="watermark-track track-left">
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+        </div>
+        <div class="watermark-track track-right">
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+        </div>
+        <div class="watermark-track track-left">
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+        </div>
+        <div class="watermark-track track-right">
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+        </div>
+        <div class="watermark-track track-left">
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+            <span class="watermark-item">iloveลูกน้ำ ✨</span>
+            <span class="watermark-item">iloveลูกน้ำ 💖</span>
+            <span class="watermark-item">iloveลูกน้ำ 🐾</span>
+            <span class="watermark-item">iloveลูกน้ำ 💕</span>
+            <span class="watermark-item">iloveลูกน้ำ 🌸</span>
+            <span class="watermark-item">iloveลูกน้ำ ❤️</span>
+        </div>
+    </div>
+
+    <!-- HTML Audio Element สำหรับเพลง (วางไฟล์เพลงชื่อ song.mp3 ไว้ในโฟลเดอร์เดียวกัน) -->
+    <!-- Background Music (YouTube Stream + Fallback song.mp3) -->
+    <div id="yt-player-container" style="position:fixed; top:-1000px; left:-1000px; width:1px; height:1px; opacity:0; pointer-events:none;">
+        <div id="yt-player"></div>
+    </div>
+    <audio id="bg-music" src="song.mp3" loop preload="auto"></audio>
+
+    <!-- Top Music Controls & Mute Toggle -->
+    <div class="fixed top-4 right-4 z-50 flex items-center space-x-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-pink-200">
+        <button id="music-toggle" onclick="toggleAudio()" class="text-pink-500 hover:text-pink-600 transition focus:outline-none flex items-center gap-2 font-medium text-sm">
+            <i id="music-icon" class="fas fa-heart-pulse text-lg animate-pulse"></i>
+            <span id="music-text">เปิดเพลง 🎵 (ไม่บอกเธอ)</span>
+        </button>
+    </div>
+
+    <!-- Main Dynamic Page Containers -->
+    <main class="relative z-10 container mx-auto max-w-lg min-h-screen p-4 flex flex-col justify-center items-center">
+
+        <!-- PAGE 1: LOADING / TEASER PAGE -->
+        <section id="page-1" class="page-transition w-full flex flex-col items-center text-center py-8">
+            <div class="glass-card rounded-3xl p-8 w-full animate-float flex flex-col items-center relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-300/30 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-rose-400/30 rounded-full blur-2xl"></div>
+
+                <div class="relative mb-6">
+                    <div class="w-28 h-28 bg-gradient-to-tr from-pink-400 to-rose-400 rounded-full flex items-center justify-center shadow-xl animate-pulse-heart">
+                        <i class="fas fa-heart text-5xl text-white"></i>
+                    </div>
+                    <span class="absolute -top-2 -right-2 bg-yellow-300 text-pink-700 text-xs font-bold px-3 py-1 rounded-full shadow-md animate-bounce">
+                        Special! ✨
+                    </span>
+                </div>
+
+                <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-2 glow-text">
+                    กำลังโหลดความรู้สึก... 💕
+                </h1>
+                <p class="text-gray-600 text-sm sm:text-base mb-6">
+                    มีอะไรบางอย่างที่สำคัญมากๆ อยากจะบอกเธอ...
+                </p>
+
+                <div class="w-full bg-pink-100 h-4 rounded-full overflow-hidden shadow-inner mb-6 relative">
+                    <div id="loader-bar" class="h-full bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 w-0 transition-all duration-300 rounded-full relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white/60 animate-ping"></div>
+                    </div>
+                </div>
+
+                <p id="loader-text" class="text-xs text-pink-500 font-semibold mb-6 animate-pulse">
+                    กำลังจัดเตรียมหัวใจ... (0%)
+                </p>
+
+                <button id="btn-start" onclick="goToPage(2)" class="hidden w-full py-4 px-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-pink-300/50 transform hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-2 text-lg">
+                    <span>เปิดอ่านข้อความ</span>
+                    <i class="fas fa-envelope-open-text"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 2: HEARTFELT LETTER & SCANNER -->
+        <section id="page-2" class="page-transition w-full hidden flex-col items-center text-center py-6">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 w-full flex flex-col items-center relative">
+                
+                <button onclick="goToPage(1)" class="absolute top-4 left-4 text-pink-500 hover:text-pink-700 bg-white/80 hover:bg-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm transition flex items-center gap-1 border border-pink-200">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>ย้อนกลับ</span>
+                </button>
+
+                <div class="inline-flex items-center gap-2 bg-pink-100 text-pink-600 px-4 py-1.5 rounded-full text-xs font-semibold mb-4 border border-pink-200 mt-6 sm:mt-0">
+                    <i class="fas fa-sparkles text-yellow-400"></i>
+                    <span>ความในใจจากคนๆ หนึ่ง</span>
+                </div>
+
+                <div class="w-full bg-white/80 backdrop-blur-sm rounded-2xl p-5 mb-6 text-left border border-pink-100 shadow-sm relative min-h-[160px] flex flex-col justify-between">
+                    <p id="typewriter-text" class="text-gray-700 text-sm sm:text-base leading-relaxed font-normal min-h-[100px]"></p>
+                    <div class="text-right text-xs text-pink-400 font-semibold mt-2">
+                        — จากใจจริง ❤️
+                    </div>
+                </div>
+
+                <h3 class="text-pink-600 font-bold text-base sm:text-lg mb-1">
+                    ยืนยันตัวตนเพื่อปลดล็อกขั้นต่อไป 🔒
+                </h3>
+                <p class="text-gray-500 text-xs mb-4">
+                    แตะที่ลายนิ้วมือค้างไว้ 2 วินาทีนะ...
+                </p>
+
+                <div class="relative flex flex-col items-center my-2">
+                    <svg class="w-32 h-32 transform -rotate-90">
+                        <circle cx="64" cy="64" r="54" stroke="currentColor" stroke-width="6" class="text-pink-100" fill="transparent"/>
+                        <circle id="scan-progress-circle" cx="64" cy="64" r="54" stroke="currentColor" stroke-width="6" class="text-pink-500 transition-all duration-75" fill="transparent" stroke-dasharray="339.29" stroke-dashoffset="339.29" stroke-linecap="round"/>
+                    </svg>
+
+                    <div id="fingerprint-btn" 
+                         onmousedown="startScanning()" 
+                         onmouseup="stopScanning()" 
+                         mouseleave="stopScanning()"
+                         ontouchstart="startScanning(event)" 
+                         ontouchend="stopScanning()"
+                         class="absolute inset-0 m-auto w-24 h-24 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 active:scale-95 transition-transform overflow-hidden">
+                        
+                        <div id="scan-line" class="scan-beam hidden"></div>
+                        <i class="fas fa-fingerprint text-5xl text-white opacity-90"></i>
+                    </div>
+                </div>
+
+                <p id="scan-status" class="text-xs font-semibold text-pink-500 mt-3 h-4">
+                    วางนิ้วแล้วค้างไว้เลย...
+                </p>
+            </div>
+        </section>
+
+        <!-- PAGE 3: THE BIG QUESTION & RUNAWAY BUTTON -->
+        <section id="page-3" class="page-transition w-full hidden flex-col items-center text-center py-6">
+            <div id="proposal-box" class="glass-card rounded-3xl p-6 sm:p-8 w-full flex flex-col items-center relative overflow-hidden">
+                
+                <button onclick="goToPage(2)" class="absolute top-4 left-4 text-pink-500 hover:text-pink-700 bg-white/80 hover:bg-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm transition flex items-center gap-1 border border-pink-200 z-30">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>ย้อนกลับ</span>
+                </button>
+
+                <div class="w-28 h-28 bg-gradient-to-tr from-pink-300 via-rose-300 to-red-300 rounded-3xl flex items-center justify-center mb-6 shadow-xl animate-float border-4 border-white mt-6 sm:mt-0">
+                    <div class="text-center">
+                        <span class="text-5xl">🥺</span>
+                        <div class="flex justify-center gap-1 -mt-1 text-pink-600 text-xs">
+                            <i class="fas fa-heart animate-ping"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mb-3 glow-text">
+                    เป็นแฟนกับเรานะ? 💕
+                </h2>
+                <p class="text-gray-600 text-sm mb-8">
+                    สัญญาว่าจะดูแลและทำให้มีความสุขทุกๆ วันเลย!
+                </p>
+
+                <div id="funny-toast" class="opacity-0 transition-opacity duration-300 bg-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-full mb-4 shadow-md pointer-events-none">
+                    กดไม่ทันหรอก~ 😜
+                </div>
+
+                <div class="w-full flex flex-col sm:flex-row items-center justify-center gap-4 relative min-h-[140px]" id="buttons-area">
+                    <button onclick="acceptProposal()" class="w-full sm:w-auto min-w-[160px] py-4 px-6 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-pink-300/50 transform hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 text-lg z-20">
+                        <i class="fas fa-heart"></i>
+                        <span>ตกลงเป็นแฟน ❤️</span>
+                    </button>
+
+                    <button id="no-btn" 
+                            onmouseover="runAwayButton()" 
+                            onclick="runAwayButton()" 
+                            ontouchstart="runAwayButton(event)" 
+                            class="w-full sm:w-auto min-w-[140px] py-4 px-6 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-2xl shadow-md transition-all duration-200 z-10 sm:relative">
+                        <span>ไม่เป็น 😜</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE: PROMISES & GIRLFRIEND PRIVILEGES -->
+        <section id="page-privileges" class="page-transition w-full hidden flex-col items-center text-center py-6">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 w-full flex flex-col items-center relative overflow-hidden anime-glow">
+                
+                <button onclick="backFromPrivileges()" class="absolute top-4 left-4 text-pink-500 hover:text-pink-700 bg-white/80 hover:bg-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm transition flex items-center gap-1 border border-pink-200 z-30">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>ย้อนกลับ</span>
+                </button>
+
+                <div class="relative mb-3 mt-4 sm:mt-0">
+                    <div class="w-20 h-20 bg-gradient-to-tr from-pink-400 via-rose-400 to-red-400 rounded-3xl flex items-center justify-center shadow-xl animate-float border-4 border-white">
+                        <span class="text-4xl">📜</span>
+                    </div>
+                    <span class="absolute -bottom-1 -right-2 bg-yellow-400 text-pink-900 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow border border-white">
+                        VIP ONLY ✨
+                    </span>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mb-1 glow-text">
+                    สัญญารัก & สิทธิพิเศษของลูกน้ำ 💖
+                </h2>
+                <p class="text-pink-500 text-xs sm:text-sm font-medium mb-5">
+                    สิทธิพิเศษเฉพาะ "แฟนลูกน้ำ" คนเดียวในโลกเท่านั้น!
+                </p>
+
+                <!-- Privilege Cards List -->
+                <div class="w-full space-y-3 mb-6 text-left">
+                    <div class="privilege-card bg-white/85 backdrop-blur-sm rounded-2xl p-3.5 border border-pink-200/80 shadow-sm flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center text-pink-500 text-lg flex-shrink-0">
+                            💖
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800 text-sm">สิทธิ์งอแงได้ 24 ชม.</h4>
+                            <p class="text-xs text-gray-600 mt-0.5">ไม่จำกัดจำนวนครั้ง งอแงได้เต็มที่ มีคนคอยโอ๋เสมอ 🥰</p>
+                        </div>
+                    </div>
+
+                    <div class="privilege-card bg-white/85 backdrop-blur-sm rounded-2xl p-3.5 border border-pink-200/80 shadow-sm flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center text-rose-500 text-lg flex-shrink-0">
+                            🤝
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800 text-sm">สิทธิ์ในการจับมือตลอดการเดินทาง</h4>
+                            <p class="text-xs text-gray-600 mt-0.5">ไม่ว่าจะไปที่ไหน จะเดินข้างๆ และจับมือไว้แน่นๆ เสมอ 🐾</p>
+                        </div>
+                    </div>
+
+                    <div class="privilege-card bg-white/85 backdrop-blur-sm rounded-2xl p-3.5 border border-pink-200/80 shadow-sm flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-500 text-lg flex-shrink-0">
+                            🍧
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800 text-sm">สิทธิ์พาไปกินของอร่อยทุกครั้งที่อยากกิน</h4>
+                            <p class="text-xs text-gray-600 mt-0.5">อยากกินอะไร ที่ไหน บอกมาได้เลย พร้อมพาไปทุกมื้อ 😋</p>
+                        </div>
+                    </div>
+
+                    <div class="privilege-card bg-white/85 backdrop-blur-sm rounded-2xl p-3.5 border border-pink-200/80 shadow-sm flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center text-red-500 text-lg flex-shrink-0">
+                            🧸
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800 text-sm">สิทธิ์กอดแน่นๆ เวลาเหนื่อยหรือท้อ</h4>
+                            <p class="text-xs text-gray-600 mt-0.5">มีอ้อมกอดอุ่นๆ คอยชาร์จพลังให้ตลอดเวลาเลยนะ 🤗</p>
+                        </div>
+                    </div>
+
+                    <div class="privilege-card bg-white/85 backdrop-blur-sm rounded-2xl p-3.5 border border-pink-200/80 shadow-sm flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-500 text-lg flex-shrink-0">
+                            👂
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800 text-sm">สิทธิ์รับฟังทุกเรื่องเสมอ</h4>
+                            <p class="text-xs text-gray-600 mt-0.5">ไม่ว่าเรื่องเล็กหรือใหญ่ เราพร้อมรับฟังและอยู่ข้างๆ ตลอด 💕</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="goToFinalPage()" class="w-full py-4 px-6 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold rounded-2xl shadow-xl hover:shadow-pink-300/50 transform hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 text-base z-20 animate-pulse">
+                    <i class="fas fa-certificate"></i>
+                    <span>รับสิทธิ์ & ดูใบรับรองความเป็นแฟน 📜✨</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- PAGE 4: VICTORY & ANIME CELEBRATION -->
+        <section id="page-4" class="page-transition w-full hidden flex-col items-center text-center py-6">
+            <div class="glass-card rounded-3xl p-6 sm:p-8 w-full flex flex-col items-center relative overflow-hidden anime-glow">
+                
+                <button onclick="goToPrivilegesPage()" class="absolute top-4 left-4 text-pink-500 hover:text-pink-700 bg-white/80 hover:bg-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm transition flex items-center gap-1 border border-pink-200 z-30">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>ย้อนกลับ</span>
+                </button>
+
+                <div class="relative mb-4 mt-6 sm:mt-0">
+                    <div class="w-28 h-28 bg-gradient-to-tr from-amber-300 via-pink-400 to-rose-500 rounded-full flex items-center justify-center shadow-2xl animate-bounce">
+                        <span class="text-6xl">🥰</span>
+                    </div>
+                    <span class="absolute -bottom-2 -right-2 bg-yellow-400 text-pink-900 text-xs font-black px-3 py-1 rounded-full shadow-lg border-2 border-white">
+                        OFFICIAL! 🎉
+                    </span>
+                </div>
+
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mb-2 glow-text">
+                    เย้! ตกลงแล้วน้า! 💖
+                </h1>
+                <p class="text-pink-500 font-semibold text-sm mb-6">
+                    ห้ามคืนคำเด็ดขาดเลยนะเจ้าความรัก~ ✨
+                </p>
+
+                <div class="w-full bg-pink-50/90 rounded-2xl p-5 mb-6 border-2 border-dashed border-pink-300 text-left relative shadow-inner">
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="text-xs font-bold text-pink-400 tracking-wider">ใบรับรองความเป็นแฟน 📜</span>
+                        <span id="cert-date" class="text-xs text-gray-500 font-medium"></span>
+                    </div>
+                    <div class="text-gray-700 text-sm space-y-2">
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-pink-500"></i>
+                            <span>สถานะ: <strong class="text-pink-600">มีแฟนแล้ว (ห้ามจีบ)</strong></span>
+                        </p>
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-pink-500"></i>
+                            <span>ระยะเวลาสัญญา: <strong class="text-pink-600">ตลอดไป ❤️</strong></span>
+                        </p>
+                    </div>
+
+                    <div class="absolute right-3 bottom-2 transform rotate-12 opacity-80 pointer-events-none">
+                        <div class="w-16 h-16 border-4 border-rose-500 rounded-full flex items-center justify-center text-rose-500 font-black text-xs text-center p-1 uppercase tracking-tighter">
+                            APPROVED BY HEART
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full mb-6">
+                    <p class="text-xs font-semibold text-gray-500 mb-2 text-left flex items-center gap-1">
+                        <i class="fas fa-paw text-pink-400"></i>
+                        <span>จับมือกันตลอดไปนะเจ้าแมว 🐱💖🐱</span>
+                    </p>
+                    
+                    <div class="relative w-full h-48 bg-gradient-to-b from-pink-100/80 to-rose-100/80 rounded-2xl p-4 border border-pink-200/80 shadow-md flex flex-col items-center justify-center overflow-hidden">
+                        
+                        <div class="absolute top-2 left-4 text-pink-400 text-xs animate-bounce">✨</div>
+                        <div class="absolute top-4 right-6 text-rose-400 text-sm animate-pulse">💖</div>
+                        <div class="absolute bottom-3 left-6 text-pink-300 text-sm animate-pulse">💕</div>
+
+                        <svg class="w-full h-32 max-w-[280px] drop-shadow-md" viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g class="animate-pulse-heart">
+                                <path d="M150 55 C150 45, 138 35, 128 45 C118 55, 150 75, 150 75 C150 75, 182 55, 172 45 C162 35, 150 45, 150 55 Z" fill="#FF3366"/>
+                            </g>
+                            
+                            <!-- LEFT CAT -->
+                            <g class="animate-float" style="animation-duration: 3s;">
+                                <path d="M50 130 Q30 110 40 90" stroke="#E2E8F0" stroke-width="12" stroke-linecap="round" fill="none"/>
+                                <ellipse cx="85" cy="125" rx="35" ry="30" fill="#FFFFFF" stroke="#F472B6" stroke-width="3"/>
+                                <circle cx="85" cy="80" r="32" fill="#FFFFFF" stroke="#F472B6" stroke-width="3"/>
+                                <polygon points="62,56 70,30 85,50" fill="#FFD1DC" stroke="#F472B6" stroke-width="2"/>
+                                <polygon points="108,56 100,30 85,50" fill="#FFD1DC" stroke="#F472B6" stroke-width="2"/>
+                                <path d="M72 78 Q77 84 82 78" stroke="#475569" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <path d="M88 78 Q93 84 98 78" stroke="#475569" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <ellipse cx="68" cy="85" rx="6" ry="4" fill="#FF80BF" opacity="0.6"/>
+                                <ellipse cx="102" cy="85" rx="6" ry="4" fill="#FF80BF" opacity="0.6"/>
+                                <polygon points="83,83 87,83 85,86" fill="#F472B6"/>
+                                <path d="M81 87 Q85 91 85 88 Q85 91 89 87" stroke="#F472B6" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                <path d="M105 110 Q125 112 142 110" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M105 110 Q125 112 142 110" stroke="#F472B6" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <circle cx="142" cy="110" r="7" fill="#FFD1DC" stroke="#F472B6" stroke-width="2"/>
+                            </g>
+
+                            <!-- RIGHT CAT -->
+                            <g class="animate-float" style="animation-duration: 3.5s; animation-delay: 0.2s;">
+                                <path d="M250 130 Q270 110 260 90" stroke="#FDBA74" stroke-width="12" stroke-linecap="round" fill="none"/>
+                                <ellipse cx="215" cy="125" rx="35" ry="30" fill="#FFEDD5" stroke="#FB923C" stroke-width="3"/>
+                                <circle cx="215" cy="80" r="32" fill="#FFEDD5" stroke="#FB923C" stroke-width="3"/>
+                                <path d="M225 50 C235 55, 240 70, 245 75 C240 85, 220 80, 225 50 Z" fill="#FDBA74" opacity="0.8"/>
+                                <polygon points="192,56 200,30 215,50" fill="#FDBA74" stroke="#FB923C" stroke-width="2"/>
+                                <polygon points="238,56 230,30 215,50" fill="#FDBA74" stroke="#FB923C" stroke-width="2"/>
+                                <path d="M202 78 Q207 84 212 78" stroke="#475569" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <path d="M218 78 Q223 84 228 78" stroke="#475569" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <ellipse cx="198" cy="85" rx="6" ry="4" fill="#FF80BF" opacity="0.6"/>
+                                <ellipse cx="232" cy="85" rx="6" ry="4" fill="#FF80BF" opacity="0.6"/>
+                                <polygon points="213,83 217,83 215,86" fill="#FB923C"/>
+                                <path d="M211 87 Q215 91 215 88 Q215 91 219 87" stroke="#FB923C" stroke-width="2" stroke-linecap="round" fill="none"/>
+                                <path d="M195 110 Q175 112 158 110" stroke="#FFEDD5" stroke-width="12" stroke-linecap="round"/>
+                                <path d="M195 110 Q175 112 158 110" stroke="#FB923C" stroke-width="3" stroke-linecap="round" fill="none"/>
+                                <circle cx="158" cy="110" r="7" fill="#FDBA74" stroke="#FB923C" stroke-width="2"/>
+                            </g>
+
+                            <circle cx="150" cy="110" r="10" fill="#FF3366" opacity="0.25" class="animate-ping"/>
+                            <path d="M145 106 C145 102, 150 100, 150 104 C150 100, 155 102, 155 106 C155 109, 150 113, 150 113 C150 113, 145 109, 145 106 Z" fill="#FF3366"/>
+                        </svg>
+
+                        <p class="text-xs font-semibold text-pink-600 mt-1">
+                            "อยู่จับมือกันแบบนี้ไปนานๆ น้า~ 🐾"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w-full flex gap-3">
+                    <button onclick="shareLove()" class="flex-1 py-3 px-4 bg-pink-100 hover:bg-pink-200 text-pink-700 font-bold rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2">
+                        <i class="fas fa-heart text-pink-500"></i>
+                        <span>บอกรักอีกรอบ</span>
+                    </button>
+                    <button onclick="triggerConfetti()" class="flex-1 py-3 px-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold rounded-xl text-xs sm:text-sm shadow-lg hover:shadow-pink-300 transition flex items-center justify-center gap-2">
+                        <i class="fas fa-gift"></i>
+                        <span>ฉลองเพิ่ม! ✨</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="relative z-10 text-center py-4 text-xs text-pink-400 font-medium">
+        Made with ❤️ for you
+    </footer>
+
+    <script>
+        let currentPage = 1;
+        let isAudioPlaying = false;
+        let scanInterval = null;
+        let scanProgress = 0;
+        let audioCtx = null;
+
+        const letterText = "เป็นคนพิมไม่เก่งงแต่มีอะไรจะบอก.... ตั้งแต่เจอลูกน้ำเนี่ย รู้เลยชอบเธอมากก เลยใช้ความกล้าทั้งหมดทักไปคุยด้วยเลยย พอคุยด้วยทุกวันมันดูน่ารักขึ้นแบบไม่รู้ตัวเลยนะะจนอยากพัฒนาความสัมพันธ์เลย เลยอยากถามจากใจจริงเลยว่า.";
+
+        const memories = [
+            {
+                url: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80",
+                caption: "ทุกๆ รอยยิ้มของเธอคือความสุขของเรา ❤️"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=600&q=80",
+                caption: "ขอบคุณสำหรับทุกความทรงจำดีๆ ที่มีให้กัน ✨"
+            },
+            {
+                url: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=600&q=80",
+                caption: "จากนี้และตลอดไป เดินข้างๆ กันนะ 💕"
+            }
+        ];
+        let currentPhotoIdx = 0;
+
+        const funnyMessages = [
+            "กดไม่ทันหรอก~ 😜",
+            "คิดอีกทีสิ! 🥺",
+            "ปุ่มนี้กดไม่ได้น้า~ 💕",
+            "ยอมเป็นแฟนเหอะ! 🥰",
+            "จับปุ่มนี้ให้ได้ก่อน~ ✨",
+            "หัวใจบอกว่า ตกลง เถอะ! ❤️"
+        ];
+
+        function goToPage(pageNumber) {
+            const privilegesEl = document.getElementById('page-privileges');
+            if (privilegesEl && !privilegesEl.classList.contains('hidden')) {
+                privilegesEl.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    privilegesEl.classList.add('hidden');
+                    privilegesEl.classList.remove('flex', 'opacity-0', 'scale-95');
+                }, 300);
+            }
+            const currentEl = document.getElementById(`page-${currentPage}`);
+            const nextEl = document.getElementById(`page-${pageNumber}`);
+
+            if (currentPage === 3) {
+                const noBtn = document.getElementById('no-btn');
+                if (noBtn) {
+                    noBtn.style.position = 'relative';
+                    noBtn.style.left = 'auto';
+                    noBtn.style.top = 'auto';
+                }
+            }
+
+            if (currentEl) {
+                currentEl.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    currentEl.classList.add('hidden');
+                    currentEl.classList.remove('flex', 'opacity-0', 'scale-95');
+                    
+                    if (nextEl) {
+                        nextEl.classList.remove('hidden');
+                        nextEl.classList.add('flex');
+                        setTimeout(() => {
+                            nextEl.classList.remove('opacity-0', 'scale-95');
+                        }, 50);
+                    }
+                }, 300);
+            }
+
+            currentPage = pageNumber;
+
+            if (pageNumber === 2) {
+                startTypewriter();
+            } else if (pageNumber === 4) {
+                initPage4();
+            }
+        }
+
+        function initPage1Loader() {
+            let progress = 0;
+            const loaderBar = document.getElementById('loader-bar');
+            const loaderText = document.getElementById('loader-text');
+            const btnStart = document.getElementById('btn-start');
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    loaderText.innerText = "เตรียมความรู้สึกเรียบร้อยแล้ว! ✨";
+                    btnStart.classList.remove('hidden');
+                    btnStart.classList.add('animate-bounce');
+                } else {
+                    loaderText.innerText = `กำลังจัดเตรียมหัวใจ... (${progress}%)`;
+                }
+                loaderBar.style.width = `${progress}%`;
+            }, 250);
+        }
+
+        function startTypewriter() {
+            const container = document.getElementById('typewriter-text');
+            container.innerText = "";
+            let i = 0;
+            const speed = 40;
+
+            function type() {
+                if (i < letterText.length) {
+                    container.innerText += letterText.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        function startScanning(e) {
+            if (e) e.preventDefault();
+            playBeepSound(400, 0.1);
+            
+            const scanLine = document.getElementById('scan-line');
+            const statusText = document.getElementById('scan-status');
+            const circle = document.getElementById('scan-progress-circle');
+            
+            scanLine.classList.remove('hidden');
+            statusText.innerText = "กำลังสแกนลายนิ้วมือ...";
+            statusText.classList.add('text-rose-600');
+
+            scanProgress = 0;
+            const maxOffset = 339.29;
+
+            scanInterval = setInterval(() => {
+                scanProgress += 5;
+                const offset = maxOffset - (scanProgress / 100) * maxOffset;
+                circle.style.strokeDashoffset = offset;
+
+                if (scanProgress % 20 === 0) {
+                    playBeepSound(500 + scanProgress * 3, 0.05);
+                }
+
+                if (scanProgress >= 100) {
+                    stopScanning();
+                    playBeepSound(800, 0.3);
+                    statusText.innerText = "สแกนสำเร็จ! ยืนยันตัวตนแล้ว ✨";
+                    
+                    setTimeout(() => {
+                        goToPage(3);
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        function stopScanning() {
+            if (scanInterval) {
+                clearInterval(scanInterval);
+                scanInterval = null;
+            }
+            const scanLine = document.getElementById('scan-line');
+            const statusText = document.getElementById('scan-status');
+            const circle = document.getElementById('scan-progress-circle');
+
+            scanLine.classList.add('hidden');
+            if (scanProgress < 100) {
+                scanProgress = 0;
+                circle.style.strokeDashoffset = 339.29;
+                statusText.innerText = "วางนิ้วแล้วค้างไว้เลย...";
+                statusText.classList.remove('text-rose-600');
+            }
+        }
+
+        function runAwayButton(e) {
+            if (e) e.preventDefault();
+            playBeepSound(600, 0.08);
+
+            const btn = document.getElementById('no-btn');
+            const area = document.getElementById('buttons-area');
+            const toast = document.getElementById('funny-toast');
+
+            const areaRect = area.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+
+            const maxX = areaRect.width - btnRect.width - 20;
+            const maxY = areaRect.height - btnRect.height - 10;
+
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            btn.style.position = 'absolute';
+            btn.style.left = `${randomX}px`;
+            btn.style.top = `${randomY}px`;
+
+            const randomMsg = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+            toast.innerText = randomMsg;
+            toast.classList.remove('opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 1500);
+        }
+
+        function acceptProposal() {
+            playFanfareSound();
+            triggerConfetti();
+            switchSection('page-3', 'page-privileges');
+        }
+
+        function backFromPrivileges() { switchSection('page-privileges', 'page-3'); }
+        function goToPrivilegesPage() {
+            switchSection('page-4', 'page-privileges');
+        }
+
+        function goToFinalPage() {
+            playFanfareSound();
+            switchSection('page-privileges', 'page-4');
+            initPage4();
+        }
+
+        function switchSection(fromId, toId) {
+            const currentEl = document.getElementById(fromId);
+            const nextEl = document.getElementById(toId);
+
+            if (currentEl) {
+                currentEl.classList.add('opacity-0', 'scale-95');
+                setTimeout(() => {
+                    currentEl.classList.add('hidden');
+                    currentEl.classList.remove('flex', 'opacity-0', 'scale-95');
+
+                    if (nextEl) {
+                        nextEl.classList.remove('hidden');
+                        nextEl.classList.add('flex');
+                        setTimeout(() => {
+                            nextEl.classList.remove('opacity-0', 'scale-95');
+                        }, 50);
+                    }
+                }, 300);
+            }
+        }
+
+        function initPage4() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('cert-date').innerText = dateStr;
+            triggerConfetti();
+        }
+
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#ff3366', '#ff6699', '#ff99bb', '#ffd1dc']
+                });
+
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 }
+                    });
+                    confetti({
+                        particleCount: 50,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 }
+                    });
+                }, 300);
+            }
+        }
+
+        function shareLove() {
+            triggerConfetti();
+            alert('ส่งความรักให้อีกรอบเรียบร้อยแล้วน้า! ❤️✨');
+        }
+
+        /* ==========================================================================
+           BACKGROUND CANVAS FLOATING HEARTS & PARTICLES (เพิ่มจำนวนและปรับความเร็ว)
+           ========================================================================== */
+        function initParticleCanvas() {
+            const canvas = document.getElementById('bg-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = canvas.height + Math.random() * 50;
+                    this.size = Math.random() * 20 + 12; // ขนาดหัวใจ
+                    this.speedY = Math.random() * 2 + 1;  // ความเร็วในการลอยขึ้น
+                    this.angle = Math.random() * Math.PI * 2;
+                    this.speedX = Math.sin(this.angle) * 1.2; // การส่ายไปมา
+                    this.opacity = Math.random() * 0.6 + 0.3;
+                    this.color = ['#ff4d6d', '#ff758f', '#ff8fa3', '#ffb3c1', '#ff3366'][Math.floor(Math.random() * 5)];
+                }
+                update() {
+                    this.y -= this.speedY;
+                    this.angle += 0.03;
+                    this.x += Math.sin(this.angle) * 0.8;
+                    if (this.y < -30) this.reset();
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.opacity;
+                    ctx.fillStyle = this.color;
+                    ctx.font = `${this.size}px sans-serif`;
+                    ctx.fillText('❤️', this.x, this.y);
+                    ctx.restore();
+                }
+            }
+
+            // เพิ่มจำนวนหัวใจเป็น 50 ดวง
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playBeepSound(freq, duration) {
+            try {
+                initAudioContext();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
+
+        function playFanfareSound() {
+            try {
+                initAudioContext();
+                const notes = [261.63, 329.63, 392.00, 523.25];
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => {
+                        playBeepSound(freq, 0.2);
+                    }, idx * 120);
+                });
+            } catch(e){}
+        }
+
+        let ytPlayer = null;
+        let isYtReady = false;
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player', {
+                height: '100',
+                width: '100',
+                videoId: 'lFD2eid8Ugw', // Bedroom Audio - ไม่บอกเธอ
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'lFD2eid8Ugw',
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': () => { isYtReady = true; },
+                    'onStateChange': (e) => {
+                        if (e.data === YT.PlayerState.PLAYING) {
+                            isAudioPlaying = true;
+                            updateMusicUI(true);
+                        } else if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
+                            if (isAudioPlaying && e.data !== YT.PlayerState.ENDED) {
+                                isAudioPlaying = false;
+                                updateMusicUI(false);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateMusicUI(playing) {
+            const text = document.getElementById('music-text');
+            const icon = document.getElementById('music-icon');
+            if (playing) {
+                text.innerText = "พักเพลง 🎵";
+                icon.classList.add('text-pink-600');
+            } else {
+                text.innerText = "เปิดเพลง 🎵";
+                icon.classList.remove('text-pink-600');
+            }
+        }
+
+        function toggleAudio() {
+            const music = document.getElementById('bg-music');
+
+            if (!isAudioPlaying) {
+                if (isYtReady && ytPlayer && typeof ytPlayer.playVideo === 'function') {
+                    ytPlayer.playVideo();
+                    isAudioPlaying = true;
+                    updateMusicUI(true);
+                } else if (music) {
+                    music.play().then(() => {
+                        isAudioPlaying = true;
+                        updateMusicUI(true);
+                    }).catch(err => {
+                        console.log("Audio play error:", err);
+                    });
+                }
+            } else {
+                if (isYtReady && ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+                    ytPlayer.pauseVideo();
+                }
+                if (music) {
+                    music.pause();
+                }
+                isAudioPlaying = false;
+                updateMusicUI(false);
+            }
+        }
+
+        window.onload = function() {
+            initParticleCanvas();
+            initPage1Loader();
+        };
+    </script>
+</body>
+</html>
